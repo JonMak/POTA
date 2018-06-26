@@ -127,7 +127,6 @@ export default {
       // The array we are going to pass up to the parent component
       // this gets populated with the current selections
       currentComorbiditySelection: Object,
-      currentComorbidityDescription: String,
       cardioDiseases: [
         /* Cardiovascular Diseases */
         { comorbidity: Condition.AtrialFib, glossary: Glossary.AtrialFib, check: false },
@@ -186,7 +185,6 @@ export default {
     */
     aggregateConditions: function aggregateConditions(comorbidityArray, index) {
       const array = comorbidityArray;
-
       // This method also updates the rendering
       // of the checkbox when, the list item is clicked.
       if (array[index].check === false) {
@@ -194,27 +192,8 @@ export default {
       } else {
         array[index].check = false;
       }
-
       this.$emit('clickEvent', { currentComorbiditySelection: array[index].comorbidity });
     },
-    /**
-     * Emits an event, signalling to the parent an update to
-     * the parent's data is needed. Passes an object containing a glossary entry
-     * string of the current comorbidity being hovered over, up to the parent.
-     * Excutes whenever a list item is hovered over.
-     * @param comorbidityArray - The current comorbidity array being used.
-     * @param index - The index of the comorbidity to be passed.
-     */
-    passComorbidityOnHover: function passComorbidityOnHover(comorbidityArray, index) {
-      const array = comorbidityArray;
-
-      this.$emit('hoverEvent', { currentComorbiditySelection: array[index].glossary });
-    },
-
-    clearComorbidityOnHover: function clearComorbidityOnHover() {
-      this.$emit('hoverEvent', { currentComorbiditySelection: '' });
-    },
-
     /**
      * Generates an id based on the type of element and current index of the
      * element calling it.
@@ -234,28 +213,21 @@ export default {
           if (element === 'li') {
             return `cv_${conditionNameArray[index]}`;
           }
-
           return `cv_checkbox_${conditionNameArray[index]}`;
-
         case 'pd':
           if (element === 'li') {
             return `pd_${conditionNameArray[index + pdIndex]}`;
           }
-
           return `pd_checkbox_${conditionNameArray[index + pdIndex]}`;
-
         case 'other':
           if (element === 'li') {
             return `other_${conditionNameArray[index + otherIndex]}`;
           }
-
           return `other_checkbox_${conditionNameArray[index + otherIndex]}`;
-
         default:
           if (element === 'li') {
             return `med_${conditionNameArray[index + medIndex]}`;
           }
-
           return `med_checkbox_${conditionNameArray[index + medIndex]}`;
       }
     },
@@ -269,22 +241,12 @@ export default {
       }
       return true;
     },
-
     /**
      * Resets the data component of ComoListComponent.
      */
     resetData: function resetData() {
       Object.assign(this.$data, this.$options.data.call(this));
     },
-    updateData: function updateData(data) {
-      this.$data.cardioDiseases = data.cardioDiseases;
-      this.$data.medications = data.medications;
-      this.$data.otherDiseases = data.otherDiseases;
-      this.$data.pulmoDiseases = data.pulmoDiseases;
-    },
-  },
-  deactivated() {
-    this.$emit('comoList-deactivated', this.$data);
   },
 };
 </script>
@@ -293,6 +255,7 @@ export default {
 #comorbidities{
   padding-top: 20px;
   padding-bottom: 20px;
+  margin-bottom: 35px;
 }
 #comorbidities .list-group{
   height: 100vh;
