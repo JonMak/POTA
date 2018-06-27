@@ -39,10 +39,9 @@
                <div class="row">
                  <div class="col">
                    <h4>Patient's Comorbidities:</h4>
-                   <div class="container">
+                   <div class="container" style="text-align: left;">
                      <!-- this is the other place binding for the props is being used -->
-                     <ul v-bind:resultArray="resultArray"
-                         v-for="item in resultArray"
+                     <ul v-for="item in resultArray"
                          :key="item">
                          <li>{{item}}</li>
                      </ul>
@@ -50,21 +49,23 @@
                  </div>
                  <div class="col">
                    <h4>Preoperative Exams:</h4>
+                   <div class="container" style="text-align: left;">
                       <p id="exams"
                       v-for="item in exams"
                       :key="item" >
                         <b>{{ item }}</b>
                         {{ getValidity(item)}}
                       </p>
+                   </div>
                       <div id="conditional-exams" class="text-left"
-                      v-for="item in conditionalExams"
-                      :key="item">
+                      v-for="(item, index) in conditionalExams"
+                      :key="index">
                         <br/>
                         <p>
                         <b>{{ item.conditionPhrase }}</b>
                         <b>If so:</b>
                         </p>
-                        <p v-for="examName in item.exams" :key=examName>
+                        <p v-for="(examName, index) in item.exams" :key="index">
                           <b>{{ examName }}</b>
                           {{ getValidity(examName) }}
                         </p>
